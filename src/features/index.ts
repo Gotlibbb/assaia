@@ -1,1 +1,1 @@
-export {}
+export {Board} from "./board/Board"
