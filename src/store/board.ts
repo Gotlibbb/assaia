@@ -1,7 +1,7 @@
 import { makeAutoObservable } from "mobx";
 
 
-type SquareContentType = "-" | "o" | "x"
+type SquareContentType = "-" | "o" | "x" | string
 
 type Player = { name: string, content: SquareContentType }
 
@@ -36,6 +36,7 @@ class Board {
   }
 
   setBoard(length = this.rowLength, count = this.rowsCount) {
+    this.board = [];
     for (let i = 0; i < length; i++) {
       this.board.push([]);
       for (let j = 0; j < count; j++) {
@@ -62,7 +63,20 @@ class Board {
     }
   }
 
+  addPlayer () {
+    this.players.push({
+      name: `Player ${this.players.length + 1}`,
+      content: String(this.players.length + 1)
+    })
+  }
+
   checkIsHaveWinner(content: SquareContentType) {
+
+    if (this.winner) {
+      this.setBoard();
+      this.winner = null;
+    }
+
 
     //поверяем по горизонтали
     this.board.forEach(r => {
@@ -105,6 +119,10 @@ class Board {
 
   get winnerPlayer() {
     return this.winner;
+  }
+
+  setWinCount(count: number) {
+    this.winCount = count;
   }
 
   get initBoard() {
